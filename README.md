@@ -6,6 +6,12 @@ A specification and formatter designed to organize code into clear, sequential s
 
 Step comments are used to document specific portions of code, breaking down the logic into manageable, understandable sections. They serve as guidelines for developers to annotate their code effectively, highly improving code readability and flexibility. It drastically helps AI models to understand the code and its logic and to provide better suggestions and completions.
 
+
+todo: 
+- Helps shallow-code reading
+- Easier to copy/cut/paste relevant parts of the code 
+- Comment about depth and single-line code steps 
+
 # Specification 
 
 - A `step comment` is a single-line comment that starts with a number of dashes (splitted by space after each dashes) and followed by a space and a step title. Examples: `# - Step`, `# -- Sub-step`, `# --- Sub-sub-sub-step`, `# --- - Sub-sub-sub-sub step` and so on
@@ -79,7 +85,7 @@ def calculate_statistics(numbers: list[float]) -> dict:
 
 - Makes first letter of step title upper case: `- step 1` -> `- Step 1`.
 - Removes trailing dots from step title: `- Step 1...` -> `- Step 1`.
-- Removes extra spaces around `-`: # -    step 1.` -> `# - step 1`
+- Removes extra spaces around `-`: `# -    step 1.` -> `# - step 1`
 - Adds a space every three dashes: `# ---- Step` -> `# --- - Step`.
 - Leaves exactly one empty line before and after each step.
 - Skips lines wrapped in `fmt: off` and `fmt: on` comments and lines with `fmt: skip` comment.
@@ -106,7 +112,7 @@ a = 1
 
 ```
 
--> 
+will be formatted to:
 
 ```python
 
@@ -126,7 +132,7 @@ c = 3
 
 d = 4
 
-# --- - Sub-sub--sub step
+# --- - Sub-sub-sub step
 
 # fmt: off
 # -    step 1.
