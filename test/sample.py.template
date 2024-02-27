@@ -1,0 +1,13 @@
+# -    step 1.
+a = 1
+# -- sub-step 1.
+b = 2
+# -- sub-step 2...
+c = 3
+
+# fmt: off
+# -    step 1.
+a = 1
+# fmt: on
+
+# -    step 1. # fmt: skip

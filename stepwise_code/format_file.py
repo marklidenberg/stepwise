@@ -19,7 +19,7 @@ def format_file(filename: str):
 
     # - Get single_line_comment
 
-    file_extension = filename.split(".")[-1]
+    file_extension = os.path.splitext(filename)[-1]
 
     if file_extension not in file_extension_to_single_line_comment:
         raise Exception(f"File extension not supported: {file_extension}")
@@ -41,3 +41,6 @@ def format_file(filename: str):
     # -- Replace original file
 
     os.replace(filename + ".tmp", filename)
+
+
+# see `format_code.py` for formatter test
