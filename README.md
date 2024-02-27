@@ -24,11 +24,71 @@ Many standard formatters contradict with that rule. For example, `black` formatt
 
 ```python
 
+from collections import Counter
+
+
+def calculate_statistics(numbers: list[float]) -> dict:
+    """Function to calculate statistics from a list of numbers"""
+
+    # - Initialize statistics
+
+    statistics = {
+        "mean": 0,
+        "median": 0,
+        "mode": [],
+        "variance": 0,
+        "standard_deviation": 0,
+    }
+
+    # - Calculate mean
+
+    statistics["mean"] = sum(numbers) / len(numbers)
+
+    # - Calculate median
+
+    sorted_numbers = sorted(numbers)
+    n = len(sorted_numbers)
+
+    if n % 2 == 0:
+        statistics["median"] = (sorted_numbers[n // 2 - 1] + sorted_numbers[n // 2]) / 2
+    else:
+        statistics["median"] = sorted_numbers[n // 2]
+
+    # - Calculate mode
+
+    num_counter = Counter(numbers)
+    statistics["mode"] = [num for num, occ in num_counter.items() if occ == max(num_counter.values())]
+
+    # - Calculate dispersion measures
+
+    # -- Calculate variance
+
+    squared_diffs = [(x - statistics["mean"]) ** 2 for x in numbers]
+    statistics["variance"] = sum(squared_diffs) / len(numbers)
+
+    # -- Calculate standard deviation
+
+    statistics["standard_deviation"] = statistics["variance"] ** 0.5
+
+    # - Return statistics
+
+    return statistics
+
+
 ```
 
-## Example 
+# Formatter 
 
+- Makes first letter of step title upper case: `- step 1` -> `- Step 1`.
+- Removes trailing dots from step title: `- Step 1...` -> `- Step 1`.
+- Removes extra spaces around `-`: # -    step 1.` -> `# - step 1`
+- Adds a space every three dashes: `# ---- Step` -> `# --- - Step`.
+- Leaves exactly one empty line before and after each step.
+- Skips lines wrapped in `fmt: off` and `fmt: on` comments and lines with `fmt: skip` comment.
+
+Example: 
 ```python
+
 # -    step 1.
 a = 1
 # -- sub-step 1.
@@ -36,7 +96,16 @@ b = 2
 # -- sub-step 2...
 c = 3
 # --- sub-sub-step
-# ---- sub-sub--sub step
+d = 4
+# ---- sub-sub-sub step
+
+# fmt: off
+# -    step 1.
+a = 1
+# fmt: on
+
+# -    step 1. # fmt: skip
+
 ```
 
 -> 
@@ -57,5 +126,15 @@ c = 3
 
 # --- Sub-sub-step
 
+d = 4
+
 # --- - Sub-sub--sub step
+
+# fmt: off
+# -    step 1.
+a = 1
+# fmt: on
+
+# -    step 1. # fmt: skip 
+
 ```
