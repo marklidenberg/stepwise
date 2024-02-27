@@ -1,3 +1,5 @@
+import sys
+
 from stepwise_code.format_file import format_file
 from stepwise_code.list_files import list_files
 
@@ -10,6 +12,4 @@ def main(*sources):
 
 
 if __name__ == "__main__":
-    import sys
-
     main(*sys.argv[1:])

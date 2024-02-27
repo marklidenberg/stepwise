@@ -1,5 +1,4 @@
 import re
-import textwrap
 
 from stepwise_code.format_code.clean_test_string import clean_test_string
 
@@ -7,21 +6,35 @@ from stepwise_code.format_code.clean_test_string import clean_test_string
 def mark_non_formatted_lines(text: str, single_line_comment: str = "#") -> str:
     """Prefix non-formatted lines with 'WISE_FORMATTING_OFF: '"""
 
-    is_formatting_on = True
-    new_lines = []
-    for line in text.split("\n"):
-        spaces = r"(?:[ ]*)"
-        single_comment_prefix = rf"{spaces}{re.escape(single_line_comment)}{spaces}"
-        if re.search(pattern=rf"^{single_comment_prefix}fmt:{spaces}off", string=line):
-            is_formatting_on = False
+    # - Iterate over lines
 
-        if re.search(pattern=rf"{single_comment_prefix}fmt:{spaces}skip", string=line) or not is_formatting_on:
+    formatting_enabled = True
+    new_lines = []
+
+    for line in text.split("\n"):
+        # - Prepare patterns
+
+        spaces_pattern = r"(?:[ ]*)"
+        single_comment_prefix_pattern = rf"{spaces_pattern}{re.escape(single_line_comment)}{spaces_pattern}"
+
+        # - Process `fmt: off`
+
+        if re.search(pattern=rf"^{single_comment_prefix_pattern}fmt:{spaces_pattern}off", string=line):
+            formatting_enabled = False
+
+        # - Process `fmt: skip` and add prefix `STEPWISE_CODE_OFF: ` if formatting is disabled
+
+        if not formatting_enabled or re.search(
+            pattern=rf"{single_comment_prefix_pattern}fmt:{spaces_pattern}skip", string=line
+        ):
             new_lines.append("STEPWISE_CODE_OFF: " + line)
         else:
             new_lines.append(line)
 
-        if re.search(pattern=rf"^{single_comment_prefix}fmt:{spaces}on", string=line):
-            is_formatting_on = True
+        # - Process `fmt: on`
+
+        if re.search(pattern=rf"^{single_comment_prefix_pattern}fmt:{spaces_pattern}on", string=line):
+            formatting_enabled = True
     return "\n".join(new_lines)
 
 

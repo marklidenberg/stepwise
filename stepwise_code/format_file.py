@@ -1,10 +1,12 @@
 import os
 
 from stepwise_code.file_extension_to_single_line_comment import file_extension_to_single_line_comment
-from stepwise_code.format_code import format_code
+from stepwise_code.format_code.format_code import format_code
 
 
 def format_file(filename: str):
+    """Read, format and write file."""
+
     # - Check if file exists
 
     if not os.path.exists(filename):

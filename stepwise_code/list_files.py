@@ -12,6 +12,7 @@ def list_files(
     absolute: bool = False,
 ) -> List[str]:
     """List all filenames at a given path."""
+
     # - Get filenames
 
     if not recursive:
