@@ -1,6 +1,9 @@
 from stepwise_code.format_code.clean_test_string import clean_test_string
 from stepwise_code.format_code.format_steps import format_steps
-from stepwise_code.format_code.wrap_non_formatted_lines import mark_non_formatted_lines, unmark_non_formatted_lines
+from stepwise_code.format_code.prefix_non_formatted_lines import (
+    prefix_non_formatted_lines,
+    unprefix_non_formatted_lines,
+)
 
 
 def format_code(text: str, single_line_comment: str = "#") -> str:
@@ -8,7 +11,7 @@ def format_code(text: str, single_line_comment: str = "#") -> str:
 
     # - Mark unformatted code
 
-    text = mark_non_formatted_lines(text)  # add special prefixes to lines that should not be formatted
+    text = prefix_non_formatted_lines(text)  # add special prefixes to lines that should not be formatted
 
     # - Format steps
 
@@ -16,7 +19,7 @@ def format_code(text: str, single_line_comment: str = "#") -> str:
 
     # - Unmark non formatted lines
 
-    text = unmark_non_formatted_lines(text)  # remove special prefixes from lines that should not be formatted
+    text = unprefix_non_formatted_lines(text)  # remove special prefixes from lines that should not be formatted
 
     # - Return
 

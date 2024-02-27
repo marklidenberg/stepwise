@@ -3,8 +3,8 @@ import re
 from stepwise_code.format_code.clean_test_string import clean_test_string
 
 
-def mark_non_formatted_lines(text: str, single_line_comment: str = "#") -> str:
-    """Prefix non-formatted lines with 'WISE_FORMATTING_OFF: '"""
+def prefix_non_formatted_lines(text: str, single_line_comment: str = "#") -> str:
+    """Add special prefixes to lines that should not be formatted 'STEPWISE_CODE_OFF: '"""
 
     # - Iterate over lines
 
@@ -38,7 +38,7 @@ def mark_non_formatted_lines(text: str, single_line_comment: str = "#") -> str:
     return "\n".join(new_lines)
 
 
-def unmark_non_formatted_lines(text: str) -> str:
+def unprefix_non_formatted_lines(text: str) -> str:
     """Remove 'STEPWISE_CODE_OFF: ' prefixes"""
 
     return re.sub(
@@ -75,9 +75,11 @@ def test():
     STEPWISE_CODE_OFF:     c = 3 # fmt: skip
     """
 
-    assert clean_test_string(mark_non_formatted_lines(text1)) == clean_test_string(text2)
-    assert clean_test_string(unmark_non_formatted_lines(clean_test_string(text2))) == clean_test_string(text1)
-    assert clean_test_string(unmark_non_formatted_lines(mark_non_formatted_lines(text1))) == clean_test_string(text1)
+    assert clean_test_string(prefix_non_formatted_lines(text1)) == clean_test_string(text2)
+    assert clean_test_string(unprefix_non_formatted_lines(clean_test_string(text2))) == clean_test_string(text1)
+    assert clean_test_string(unprefix_non_formatted_lines(prefix_non_formatted_lines(text1))) == clean_test_string(
+        text1
+    )
 
 
 if __name__ == "__main__":
