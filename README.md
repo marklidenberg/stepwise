@@ -1,14 +1,12 @@
 # stepwise-code
 
-A specification and formatter designed to organize any code into clear, sequential steps
+A specification and formatter designed to organize code into clear, sequential steps
 
-# Specification 
-
-## Step comments 
+# Step comments 
 
 Step comments are used to document specific portions of code, breaking down the logic into manageable, understandable sections. They serve as guidelines for developers to annotate their code effectively, highly improving code readability and flexibility. It drastically helps AI models to understand the code and its logic and to provide better suggestions and completions.
 
-## Rules 
+# Specification 
 
 - A `step comment` is a single-line comment that starts with a number of dashes (splitted by space after each dashes) and followed by a space and a step title. Examples: `# - Step`, `# -- Sub-step`, `# --- Sub-sub-sub-step`, `# --- - Sub-sub-sub-sub step` and so on
 - All steps MUST start with uppercase letters and do not contain trailing dots
@@ -16,11 +14,11 @@ Step comments are used to document specific portions of code, breaking down the 
 - Each block scope effectively resets the depth of the hierarchy and new step MUST start with a single dash
 - If code block has any step comments, it MUST be covered fully step comments
 
-### Why not enforce all steps to have an empty line before and after?
+## Why not enforce all steps to have an empty line before and after?
 
 Many standard formatters contradict with that rule. For example, `black` formatter in Python removes empty line before comment if it is the first line of the block.
 
-# Example
+## Example
 
 ```python
 
