@@ -4,6 +4,9 @@ a = 1
 b = 2
 # -- sub-step 2...
 c = 3
+# --- sub-sub-step
+d = 4
+# ---- sub-sub-sub step
 
 # fmt: off
 # -    step 1.

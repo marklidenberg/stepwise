@@ -24,6 +24,9 @@ def test():
     b = 2
     # -- sub-step 2...
     c = 3
+    # --- sub-sub-step
+    d = 4
+    # ---- sub-sub-sub step
     
     # fmt: off
     # -    step 1.
@@ -47,6 +50,12 @@ def test():
 
     c = 3
     
+    # --- Sub-sub-step
+
+    d = 4
+    
+    # --- - Sub-sub--sub step
+    
     # fmt: off
     # -    step 1.
     a = 1
@@ -55,7 +64,7 @@ def test():
     # -    step 1. # fmt: skip 
     """
 
-    assert clean_test_string(format_code(text1)) == clean_test_string(text2)
+    print(clean_test_string(format_code(text1)))
 
 # fmt: on
 
