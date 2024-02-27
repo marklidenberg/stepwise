@@ -1,12 +1,18 @@
 import re
-import textwrap
 
-from stepwise_code.clean_test_string import clean_test_string
-from stepwise_code.repeat_symbol_split import repeat_symbol_split
+from stepwise_code.format_code.clean_test_string import clean_test_string
+from stepwise_code.format_code.repeat_symbol_split import repeat_symbol_split
 
 
 def format_steps(text: str, line_comment_symbol: str = "#") -> str:
-    """Format code steps."""
+    """Format code steps.
+
+    - Make first letter of step title upper case: `- step 1` -> `- Step 1`.
+    - Remove trailing dots from step title: `- Step 1...` -> `- Step 1`.
+    - Remove extra spaces around `-`: # -    step 1.` -> `# - step 1`
+    - Leave exactly one empty line before and after each step.
+
+    """
 
     def _substitutor(match: re.Match, text: str) -> str:
         # - Extract
@@ -22,11 +28,11 @@ def format_steps(text: str, line_comment_symbol: str = "#") -> str:
 
         text = text.strip()
 
-        # - Make title
+        # - Make first letter of step title upper case: `- step 1` -> `- Step 1`
 
         text = text[0].upper() + text[1:]
 
-        # - Remove trailing dots
+        # - Remove trailing dots from step title: `- Step 1...` -> `- Step 1`
 
         text = re.sub(r"[\.]*$", "", text)
 
@@ -48,11 +54,11 @@ def format_steps(text: str, line_comment_symbol: str = "#") -> str:
 
 def test():
     text1 = """
-    # - Step 1
+    # -    step 1.
     a = 1
-    # -- Sub-step 1
+    # -- sub-step 1.
     b = 2
-    # -- Sub-step 2
+    # -- sub-step 2...
     c = 3
     """
 

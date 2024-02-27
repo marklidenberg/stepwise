@@ -45,7 +45,6 @@ authors = ["marklidenberg <marklidenberg@gmail.com>"]
 [tool.poetry.dependencies]
 
 python = "^3.8"
-sortedcontainers = ">=0.5.0"
 
 [tool.poetry.dev-dependencies]
 

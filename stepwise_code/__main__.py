@@ -1,8 +1,5 @@
-import fire
-
-from deeplay.utils.list_files import list_files
-from deeplay.utils.loguru_utils import configure_loguru
-from deeplay.utils.wise_comments.format_file import format_file
+from stepwise_code.format_file import format_file
+from stepwise_code.list_files import list_files
 
 
 def main(*sources):
@@ -13,5 +10,6 @@ def main(*sources):
 
 
 if __name__ == "__main__":
-    configure_loguru()
-    fire.Fire(main)
+    import sys
+
+    main(*sys.argv[1:])

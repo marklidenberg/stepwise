@@ -1,10 +1,11 @@
 import os
 
+from stepwise_code.file_extension_to_single_line_comment import file_extension_to_single_line_comment
+from stepwise_code.format_code import format_code
 
-def format_file(filename):
-    logger.debug("Formatting file", filename=filename)
 
-    # - Check if not exists
+def format_file(filename: str):
+    # - Check if file exists
 
     if not os.path.exists(filename):
         raise Exception(f"File not found: {filename}")
@@ -14,20 +15,23 @@ def format_file(filename):
     with open(filename, encoding="utf-8") as f:
         text = f.read()
 
-    # - Get file type
+    # - Get single_line_comment
 
-    file_type = get_file_type(filename)
+    file_extension = filename.split(".")[-1]
 
-    # - Format
+    if file_extension not in file_extension_to_single_line_comment:
+        raise Exception(f"File extension not supported: {file_extension}")
 
-    for type_group, values in type_config.items():
-        if file_type not in values["file_types"]:
-            continue
-        text = WiseCommentsFormatter(**values["wise_comments_config"]).format(text)
+    # - Format text
+
+    text = format_code(
+        text,
+        single_line_comment=file_extension_to_single_line_comment[file_extension],
+    )
 
     # - Write
 
-    # -- Write to tmp copy
+    # -- Write to tmp copy, just in case we work with large files
 
     with open(filename + ".tmp", "w", encoding="utf-8") as f:
         f.write(text)
