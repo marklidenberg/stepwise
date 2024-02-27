@@ -1,11 +1,5 @@
 import re
 
-from deeplay.utils.unified import unified_list
-from deeplay.utils.wise_comments.config.config import config
-
-
-# todo later: doc properly [@marklidenberg]
-
 
 class WiseCommentsFormatter:
     def __init__(self, single_comments, multi_comments=None, username=None, is_username_required=False):
@@ -61,81 +55,6 @@ class WiseCommentsFormatter:
         empty_line = rf"(?:[ ]*\n)"
         pattern = rf"^{empty_line}*([ ]*){re.escape(single_comment)} (-+)([ ]+)([^\n]+){empty_line}*"
         return re.sub(pattern, lambda match: substitutor(match, text=text), text, flags=re.MULTILINE)
-
-    def _format_sections(self, text, single_comment):
-        def substitutor(match):
-
-            # - Process general case
-
-            s1, s2, brackets, s3, text = match.groups()  # sample comment: (s1) # (s2) (brackets, like [[[) (s3) (text)
-            brackets = brackets.replace(" ", "")
-
-            text = text.strip()
-
-            # - Make title
-
-            text = text[0].upper() + text[1:]
-
-            # - Remove trailing closing brackets
-
-            text = re.sub(r"([\] ]*)$", "", text)
-
-            # - Remove trailing dots if only one
-
-            text = re.sub(r"[\.]*$", "", text)
-
-            # - Remove closing brackets
-
-            bracket = rf"\]"
-            text = re.sub(rf"[{bracket}]*", "", text)
-            return f'\n{s1}{single_comment} {WiseCommentsFormatter._repeat_symbol_split("[", len(brackets))}{text.strip()}{WiseCommentsFormatter._repeat_symbol_split("]", len(brackets))}\n\n'
-
-        empty_line = rf"(?:[ ]*\n)"
-        bracket = rf"\["
-        brackets = rf"({bracket}[{bracket} ]*)"
-        pattern = rf"^{empty_line}*([ ]*){re.escape(single_comment)}([ ]*){brackets}([ ]*)([^\n]+){empty_line}*"
-
-        return re.sub(pattern, substitutor, text, flags=re.MULTILINE)
-
-    def _format_multi_line_comments(self, text, multi_comment):
-        def substitutor(match):
-
-            # - Extract
-
-            (
-                s1,
-                multi_comment_start,
-                text,
-                multi_comment_stop,
-            ) = match.groups()  # sample comment: (s1) (comment_symbol_start) (text) (comment_symbol_stop)
-
-            # - Strip
-
-            text = text.strip()
-
-            # - Remove trailing dots if only one
-
-            text = re.sub(r"[\.]*$", "", text)
-
-            # - Make title
-
-            text = text[0].upper() + text[1:]
-
-            lines = text.split("\n")
-            lines = [line.strip() for line in lines]
-
-            if len(lines) >= 2:
-                lines = [multi_comment_start] + lines + [multi_comment_stop]
-            else:
-                lines = [multi_comment_start + lines[0] + multi_comment_stop]
-
-            # - Append tabulation
-
-            lines = [s1 + line for line in lines]
-            return "\n".join(lines)
-
-        pattern = rf"""^([ ]*)({re.escape(multi_comment[0])})(.*?)({re.escape(multi_comment[1])})(?:[ ]*)$"""
-        return re.sub(pattern, substitutor, text, flags=re.MULTILINE | re.DOTALL)
 
     def _format_single_line_comments(self, text, single_comment):
         def substitutor(match):

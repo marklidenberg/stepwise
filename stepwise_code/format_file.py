@@ -1,9 +1,5 @@
 import os
 
-from deeplay.utils.wise_comments.file_types import get_file_type, type_config
-from deeplay.utils.wise_comments.wise_comments_formatter import WiseCommentsFormatter
-from loguru import logger
-
 
 def format_file(filename):
     logger.debug("Formatting file", filename=filename)
