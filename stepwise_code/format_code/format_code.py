@@ -8,21 +8,9 @@ from stepwise_code.format_code.prefix_non_formatted_lines import (
 
 def format_code(text: str, single_line_comment: str = "#") -> str:
     """Apply stepwise-code formatter."""
-
-    # - Mark unformatted code
-
-    text = prefix_non_formatted_lines(text)  # add special prefixes to lines that should not be formatted
-
-    # - Format steps
-
+    text = prefix_non_formatted_lines(text)
     text = format_steps(text, line_comment_symbol=single_line_comment)
-
-    # - Unmark non formatted lines
-
-    text = unprefix_non_formatted_lines(text)  # remove special prefixes from lines that should not be formatted
-
-    # - Return
-
+    text = unprefix_non_formatted_lines(text)
     return text
 
 
